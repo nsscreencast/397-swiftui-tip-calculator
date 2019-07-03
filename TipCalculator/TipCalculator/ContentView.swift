@@ -15,6 +15,8 @@ struct ContentView : View {
     
     private var currencyFormatter: NumberFormatter = {
         let f = NumberFormatter()
+        // allow no currency symbol, extra digits, etc
+        f.isLenient = true
         f.numberStyle = .currency
         return f
     }()
@@ -49,14 +51,16 @@ struct ContentView : View {
         NavigationView {
             VStack(spacing: 20) {
                 Spacer()
-                
-                TextField($totalInput, formatter: currencyFormatter)
+
+                TextField("Total", value: $totalInput, formatter: currencyFormatter)
                     .font(.largeTitle)
                     .padding()
                     .background(Color.white)
+                    .foregroundColor(Color.black)
                     .multilineTextAlignment(.center)
                 
                 segmentedTipPercentages
+                    .padding()
                 
                 Divider()
                 

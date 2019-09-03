@@ -89,11 +89,11 @@ struct ContentView : View {
     }
     
     private var segmentedTipPercentages: some View {
-        SegmentedControl(selection: $selectedTipPercentage) {
+        Picker(selection: $selectedTipPercentage, label: Text("")) {
             ForEach(0..<tipPercentages.count) { index in
                 Text(self.formatPercent(self.tipPercentages[index])).tag(index)
             }
-        }
+        }.pickerStyle(SegmentedPickerStyle())
     }
     
     private func formatPercent(_ p: Double) -> String {

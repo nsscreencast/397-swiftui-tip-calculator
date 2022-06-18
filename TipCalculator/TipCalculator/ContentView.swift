@@ -52,7 +52,7 @@ struct ContentView : View {
             VStack(spacing: 20) {
                 Spacer()
 
-                TextField("Total", value: $totalInput, formatter: currencyFormatter)
+                totalTextField
                     .font(.largeTitle)
                     .padding()
                     .background(Color.white)
@@ -75,6 +75,15 @@ struct ContentView : View {
             .navigationBarTitle(Text("Tip Calculator"))
         }
     }
+
+    private var totalTextField: some View {
+        let currencyCode = Locale.current.currencyCode ?? "USD"
+        if #available(iOS 15.0, *) {
+            return TextField("Total", value: $totalInput, format: .currency(code: currencyCode))
+        } else {
+            return TextField("Total", value: $totalInput, formatter: currencyFormatter)
+        }
+    }
     
     private func summaryLine(label: String, amount: String, color: Color) -> some View {
         HStack {
@@ -90,8 +99,8 @@ struct ContentView : View {
     
     private var segmentedTipPercentages: some View {
         Picker(selection: $selectedTipPercentage, label: Text("")) {
-            ForEach(0..<tipPercentages.count) { index in
-                Text(self.formatPercent(self.tipPercentages[index])).tag(index)
+            ForEach(tipPercentages.indices, id: \.self) { index in
+                Text(formatPercent(tipPercentages[index])).tag(index)
             }
         }.pickerStyle(SegmentedPickerStyle())
     }
